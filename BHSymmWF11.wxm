@@ -1,0 +1,68 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 16.04.2 ] */
+
+/* [wxMaxima: input   start ] */
+(* Here is the most trivial example *)
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+(*Firstly, we define the differential operator, the symmetries of which 
+    we want to investigate *)
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+Q(f):= %i*diff(f, t) - u(t)*z*diff(f, z) - (v/2)*z^2*diff(f, z, 2);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+L(f):= tau(t, z)*diff(f, t) + xi(t, z)*diff(f, z) + phi(t, z)*f;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+expr: L(Q(f(t, z))) - Q(L(f(t, z))) - r(t, z)*Q(f(t, z)), simplify, expand;(*
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+coe11: coeff(expr, diff(f(t, z), t, 1, z, 1));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+coe02: coeff(expr, diff(f(t, z), z, 2));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+coe01: coeff(expr, diff(f(t, z), z, 1));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+coe10: coeff(expr, diff(f(t, z), t, 1));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+expr1: expr - coe11*diff(f(t, z), t, 1, z, 1) - coe02*diff(f(t, z), z, 2) - 
+coe01*diff(f(t, z), z, 1) - coe10*diff(f(t, z), t, 1), simplify, expand;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+expr2: coeff(expr1, f(t, z)), simplify, expand;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+subst([r(t, z) = r(t), 
+        diff(xi(t, z), z) = diff(c0*z - r(t)*z*log(z)/2, z), 
+        xi(t, z) = c0*z - r(t)*z*log(z)/2], coe02), simplify, expand;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+coe010: subst([tau(t, z) = tau(t), r(t, z) = r(t), 
+        diff(xi(t, z), z, 2) = diff(c0*z - r(t)*z*log(z)/2, z, 2),
+    diff(xi(t, z), z) = diff(c0*z - r(t)*z*log(z)/2, z)], coe01), simplify, expand;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+coe011: subst([diff(xi(t, z), t) = diff(c0*z - r(t)*z*log(z)/2, t),
+        xi(t, z) = c0*z - r(t)*z*log(z)/2], coe010), simplify, expand;
+/* [wxMaxima: input   end   ] */
+
+/* Maxima can't load/batch files which end with a comment! */
+"Created with wxMaxima"$
